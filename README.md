@@ -6,7 +6,7 @@ Esta API efetua um CRUD de clientes.
 
 ## Replicando no ambiente
 
-Para executar, além de clonar este repositório, é necessário substituir alguns valores no arquivo com nome <b> appsettings.json </b> dentro de APIProdutos, que contém o seguinte conteúdo. 
+Para executar, além de clonar este repositório, é necessário substituir alguns valores no arquivo com nome <b> appsettings.json </b> dentro de APIClientes, que contém o seguinte conteúdo. 
 
 > { <br>
   "ConnectionStrings": { <br>

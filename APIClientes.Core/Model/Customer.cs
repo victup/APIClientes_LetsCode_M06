@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CRUD_Clientes
+namespace APIClientes.Model.Customer
 {
     public class Customer
     {

@@ -1,13 +1,15 @@
 ﻿using Dapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using APIClientes.Model.Customer;
+using APIClientes.Core.Interfaces;
 
-namespace CRUD_Clientes.Repository
+namespace APIClientes.Repository
 {
-    public class CustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
 
-        private readonly IConfiguration _configuration;
+        public readonly IConfiguration _configuration;
 
         public CustomerRepository(IConfiguration configuration)
         {

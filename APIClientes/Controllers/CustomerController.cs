@@ -1,4 +1,5 @@
-﻿using CRUD_Clientes.Repository;
+﻿using APIClientes.Core.Interfaces;
+using APIClientes.Model.Customer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +11,10 @@ namespace CRUD_Clientes.Controllers
     [Produces("application/json")] //define que a saida é em json
     public class CustomerController : ControllerBase
     {
-        public CustomerRepository _customerRepository;
-        public CustomerController(IConfiguration configuration)
+        public ICustomerService _customerService;
+        public CustomerController(ICustomerService customerService)
         {
-            _customerRepository = new CustomerRepository(configuration);
+            _customerService = customerService;
         }
          
 
@@ -22,7 +23,7 @@ namespace CRUD_Clientes.Controllers
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public IActionResult CreateCustomer(Customer customer)
         {
-            if (!_customerRepository.InsertCustomer(customer))
+            if (!_customerService.InsertCustomer(customer))
             {
                 return BadRequest();
             }
@@ -34,7 +35,7 @@ namespace CRUD_Clientes.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<Customer>> GetCustomers()
         {
-            return Ok(_customerRepository.GetCustomers());
+            return Ok(_customerService.GetCustomers());
         }
 
         [HttpGet("/{cpf}/pesquisarPorCpf")] //https://localhost:7156/api/Customer GET
@@ -42,7 +43,7 @@ namespace CRUD_Clientes.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<Customer>> ReadCustomer(string cpf)
         {
-            var customer = _customerRepository.GetCustomer(cpf);
+            var customer = _customerService.GetCustomer(cpf);
             if (customer == null)
                 return NotFound();
             return Ok(customer);
@@ -54,7 +55,7 @@ namespace CRUD_Clientes.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Customer> Update(string cpf, Customer who)
         {
-            if (!_customerRepository.UpdateCustomer(cpf, who))
+            if (!_customerService.UpdateCustomer(cpf, who))
                 return NotFound();
 
             return Ok(who);
@@ -68,7 +69,7 @@ namespace CRUD_Clientes.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delet(string cpf)
         {
-            if (!_customerRepository.DeleteCustomer(cpf))
+            if (!_customerService.DeleteCustomer(cpf))
             {
                 return NotFound();
             }

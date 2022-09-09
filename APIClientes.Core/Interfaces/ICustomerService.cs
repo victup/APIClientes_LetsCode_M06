@@ -9,8 +9,8 @@ namespace APIClientes.Core.Interfaces
 {
     public interface ICustomerService
     {
-
-        public List<Customer> GetCustomers();
+     
+        List<Customer> GetCustomers();
 
         public Customer GetCustomer(string cpf);
 
@@ -19,6 +19,8 @@ namespace APIClientes.Core.Interfaces
         public bool DeleteCustomer(string cpf);
 
         public bool UpdateCustomer(string cpf, Customer customer);
+
+        public string GetCpfByCustomer(Customer customer);
 
     }
 }

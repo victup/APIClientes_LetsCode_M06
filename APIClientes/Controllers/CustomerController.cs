@@ -1,4 +1,5 @@
 ﻿using APIClientes.Core.Interfaces;
+using APIClientes.Filters;
 using APIClientes.Model.Customer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +22,11 @@ namespace CRUD_Clientes.Controllers
         [HttpPost("/cadastrar")] //https://localhost:7156/api/Customer CREATE
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ServiceFilter(typeof(VerificaCpfExistenteActionFilter))]
         public IActionResult CreateCustomer(Customer customer)
         {
+            Console.WriteLine("Criando cadastro de cliente");
+
             if (!_customerService.InsertCustomer(customer))
             {
                 return BadRequest();
@@ -33,30 +37,38 @@ namespace CRUD_Clientes.Controllers
 
         [HttpGet("/todosOsClientes")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [TypeFilter(typeof(LogAuthorizationFilter))]
         public ActionResult<List<Customer>> GetCustomers()
         {
+            Console.WriteLine("Buscando todos os clientes");
             return Ok(_customerService.GetCustomers());
         }
 
-        [HttpGet("/{cpf}/pesquisarPorCpf")] //https://localhost:7156/api/Customer GET
+        [HttpGet("/pesquisarPorCpf")] //https://localhost:7156/api/Customer GET
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ServiceFilter(typeof(BuscarClientePorCpfActionFilter))]
         public ActionResult<List<Customer>> ReadCustomer(string cpf)
         {
+            Console.WriteLine("Buscando cliente através do cpf");
             var customer = _customerService.GetCustomer(cpf);
             if (customer == null)
-                return NotFound();
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             return Ok(customer);
         }
 
 
-        [HttpPut("/{cpf}/atualizar")] //https://localhost:7156/api/Customer PUT
+        [HttpPut("/atualizar")] //https://localhost:7156/api/Customer PUT
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ServiceFilter(typeof(VerificaSeRegistroExisteActionFilter))]
         public ActionResult<Customer> Update(string cpf, Customer who)
         {
+            Console.WriteLine("Alterando cliente");
             if (!_customerService.UpdateCustomer(cpf, who))
-                return NotFound();
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 
             return Ok(who);
 
@@ -69,6 +81,8 @@ namespace CRUD_Clientes.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delet(string cpf)
         {
+            Console.WriteLine("Apagando cliente");
+
             if (!_customerService.DeleteCustomer(cpf))
             {
                 return NotFound();

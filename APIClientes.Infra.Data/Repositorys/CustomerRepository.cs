@@ -25,6 +25,17 @@ namespace APIClientes.Repository
             return conn.Query<Customer>(query).ToList();
         }
 
+        public string GetCpfByCustomer(Customer customer)
+        {
+            var query = "SELECT CPF FROM clientes WHERE cpf = @cpf";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("cpf", customer.Cpf);
+
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+            return conn.QueryFirstOrDefault<string>(query, parameters);
+        }
         public Customer GetCustomer(string cpf)
         {
             var query = "SELECT * FROM clientes WHERE cpf = @cpf";
@@ -82,5 +93,6 @@ namespace APIClientes.Repository
             return conn.Execute(query, parameters) == 1;
         }
 
+       
     }
 }

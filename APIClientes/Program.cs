@@ -1,5 +1,6 @@
 using APIClientes.Core.Interfaces;
 using APIClientes.Core.Services;
+using APIClientes.Filters;
 using APIClientes.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,8 +12,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add<TempoDeExecucaoActionFilter>();
+    options.Filters.Add<ExceptionalHandlingFilter>();
+}
+);
+
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<VerificaCpfExistenteActionFilter>();
+builder.Services.AddScoped<VerificaSeRegistroExisteActionFilter>();
+builder.Services.AddScoped<BuscarClientePorCpfActionFilter>();
 
 var app = builder.Build();
 

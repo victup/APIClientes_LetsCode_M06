@@ -2,6 +2,7 @@
 using APIClientes.Model.Customer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,8 @@ namespace APIClientes.Core.Services
 
         public List<Customer> GetCustomers()
         {
-            return _customerRepository.GetCustomers();
+          
+            return  _customerRepository.GetCustomers();
         }
 
         public bool InsertCustomer(Customer customer)
@@ -41,6 +43,11 @@ namespace APIClientes.Core.Services
         public bool UpdateCustomer(string cpf, Customer customer)
         {
             return _customerRepository.UpdateCustomer(cpf, customer);
+        }
+
+        public string GetCpfByCustomer(Customer customer)
+        {
+            return _customerRepository.GetCpfByCustomer(customer);
         }
     }
 }

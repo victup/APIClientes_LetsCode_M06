@@ -20,5 +20,7 @@ namespace APIClientes.Core.Interfaces
 
         public bool UpdateCustomer(string cpf, Customer customer);
 
+        public string GetCpfByCustomer(Customer customer);
+
     }
 }

@@ -3,6 +3,7 @@ using APIClientes.Filters;
 using APIClientes.Model.Customer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace CRUD_Clientes.Controllers
 {
@@ -51,6 +52,8 @@ namespace CRUD_Clientes.Controllers
         [ServiceFilter(typeof(BuscarClientePorCpfActionFilter))]
         public ActionResult<List<Customer>> ReadCustomer(string cpf)
         {
+            throw new NullReferenceException();
+
             Console.WriteLine("Buscando cliente através do cpf");
             var customer = _customerService.GetCustomer(cpf);
             if (customer == null)

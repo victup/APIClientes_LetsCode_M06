@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Data.SqlClient;
 
 namespace APIClientes.Filters
 {
@@ -9,9 +10,9 @@ namespace APIClientes.Filters
         {
             var problem = new ProblemDetails
             {
-                Status = 500,
+                Status = 0, 
                 Title = "Erro inesperado",
-                Detail = "Ocorreu um erro inesperado na solitação",
+                Detail ="Erro inesperado ao se comunicar com o banco de dados",
                 Type = context.Exception.GetType().Name
             };
 
@@ -19,15 +20,21 @@ namespace APIClientes.Filters
 
             switch (context.Exception)
             {
-                case ArgumentNullException:
-                    context.HttpContext.Response.StatusCode = StatusCodes.Status501NotImplemented;
+                case SqlException:
+                    problem.Status = 503;
+                    problem.Detail ="Erro inesperado ao se comunicar com o banco de dados";
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
                     context.Result = new ObjectResult(problem);
                     break;
-                case DivideByZeroException:
-                    context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                case NullReferenceException:
+                    problem.Status = 417;
+                    problem.Detail ="Erro inesperado no sistema";
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status417ExpectationFailed;
                     context.Result = new ObjectResult(problem);
                     break;
                 default:
+                    problem.Status = 500;
+                    problem.Detail ="Erro inesperado. Tente novamente";
                     context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
                     context.Result = new ObjectResult(problem);
                     break;

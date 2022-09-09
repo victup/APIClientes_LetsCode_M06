@@ -52,8 +52,6 @@ namespace CRUD_Clientes.Controllers
         [ServiceFilter(typeof(BuscarClientePorCpfActionFilter))]
         public ActionResult<List<Customer>> ReadCustomer(string cpf)
         {
-            throw new NullReferenceException();
-
             Console.WriteLine("Buscando cliente através do cpf");
             var customer = _customerService.GetCustomer(cpf);
             if (customer == null)

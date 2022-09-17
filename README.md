@@ -35,7 +35,7 @@ Para gerar para a APIProdutos (https://github.com/victup/APIProdutos_LetsCode_M0
 >  var tokenDescriptor = new SecurityTokenDescriptor <br>
             { <br>
                 Issuer = "APIClientes.com", <br>
-                Audience = "APIEvents.com", <br>
+                Audience = "APIEvents.com", <br> 
                 Expires = DateTime.UtcNow.AddHours(2), <br>
                 Subject = new ClaimsIdentity(new Claim[]  <br>
                 { <br>

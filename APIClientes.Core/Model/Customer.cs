@@ -20,6 +20,9 @@ namespace APIClientes.Model.Customer
         //[Range(18, int.MaxValue, ErrorMessage = "Você deve ter no minimo 18 anos.")]
         public int? Idade => GetIdade();
 
+        [Required(ErrorMessage = "Permissão é obrigatório")]
+
+        public string Permissao { get; set; }
 
         public int GetIdade()
         {

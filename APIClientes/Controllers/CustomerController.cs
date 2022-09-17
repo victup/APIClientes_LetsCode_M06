@@ -11,6 +11,7 @@ namespace CRUD_Clientes.Controllers
     [ApiController]
     [Consumes ("application/json")] //define que a entrada é em json
     [Produces("application/json")] //define que a saida é em json
+    
     public class CustomerController : ControllerBase
     {
         public ICustomerService _customerService;

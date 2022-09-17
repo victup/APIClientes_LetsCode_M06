@@ -27,3 +27,17 @@ Para executar, além de clonar este repositório, é necessário substituir algu
 * NomeUsuario é o nome do usuário com permissão de acesso na base de dados;
 * SenhaUsuario é a senha do usuário que possui acesso à base de dados;
 * Encrypt pode ser mantido como false.
+
+## Geração de Token
+Por padrão, essa API está gerando Tokens válidos para a EventAPI (https://github.com/victup/EventAPI_LetsCode_M06). <br>
+Para gerar para a APIProdutos (https://github.com/victup/APIProdutos_LetsCode_M06) que também recebe esse Token modifique no arquivo o bloco a seguir: <br>
+ <b> Arquivo: APIClientes.Core/Services/TokenService.cs</b> <br>
+>  var tokenDescriptor = new SecurityTokenDescriptor <br>
+            { <br>
+                Issuer = "APIClientes.com", <br>
+                Audience = "APIEvents.com", <br>
+                Expires = DateTime.UtcNow.AddHours(2), <br>
+                Subject = new ClaimsIdentity(new Claim[]  <br>
+                { <br>
+Modifique o valor entre aspas de <b>Audience</b>, irá ficar assim <br>
+<b>Audience: "APIProdutos.com"</b> 
